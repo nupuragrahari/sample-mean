@@ -33,8 +33,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/style', express.static(path.join(__dirname, '/views/style')));
 var flash = require('connect-flash');
 var session = require('express-session');
-var passport = require('passport');
-require('./authentication/passport')(passport); // pass passport for configuration
 // Express Session
 app.use(session({
     secret: 'secret',
@@ -42,9 +40,6 @@ app.use(session({
     resave: true
 }));
 
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
 // Connect Flash
 app.use(flash());
 app.enable('trust proxy');
@@ -58,7 +53,7 @@ app.use(function (req, res, next) {
 
 });
 
-routes.init(app, passport);
+routes.init(app);
 // development only
 if ('development' == app.get('env')) {
     app.use(errorHandler());
